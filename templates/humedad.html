@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humedad del suelo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Medición de humedad</h1>
+        <p>Control del nivel de humedad del suelo</p>
+    </header>
+
+    <main class="contenedor">
+
+        <section class="tarjeta">
+            <h2>Humedad actual</h2>
+
+            <p class="dato">{{ sistema["humedad"] }}%</p>
+
+            <progress
+                value="{{ sistema['humedad'] }}"
+                max="100">
+            </progress>
+
+            <p>
+                Nivel mínimo configurado:
+                {{ sistema["humedad_minima"] }}%
+            </p>
+
+            <form action="{{ url_for('humedad') }}" method="POST">
+
+                <label for="humedad">
+                    Introduce un nuevo nivel de humedad:
+                </label>
+
+                <input
+                    type="number"
+                    id="humedad"
+                    name="humedad"
+                    min="0"
+                    max="100"
+                    value="{{ sistema['humedad'] }}"
+                    required
+                >
+
+                <button type="submit">
+                    Actualizar humedad
+                </button>
+
+            </form>
+
+            {% if sistema["humedad"] < sistema["humedad_minima"] %}
+                <p class="advertencia">
+                    La humedad está por debajo del nivel mínimo.
+                </p>
+            {% else %}
+                <p class="correcto">
+                    La humedad está en el nivel configurado.
+                </p>
+            {% endif %}
+
+            <a href="{{ url_for('index') }}">Volver al inicio</a>
+        </section>
+
+    </main>
+
+</body>
+</html>

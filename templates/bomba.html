@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de bomba</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Control de la bomba</h1>
+        <p>Administración del sistema de riego</p>
+    </header>
+
+    <main class="contenedor">
+
+        <section class="tarjeta">
+
+            <h2>Estado actual</h2>
+
+            {% if sistema["bomba"] %}
+                <p class="encendido">BOMBA ENCENDIDA</p>
+            {% else %}
+                <p class="apagado">BOMBA APAGADA</p>
+            {% endif %}
+
+            <p>Modo: {{ sistema["modo"] }}</p>
+
+            <form method="POST" action="{{ url_for('bomba') }}">
+
+                <button
+                    type="submit"
+                    name="accion"
+                    value="encender">
+                    Encender bomba
+                </button>
+
+                <button
+                    type="submit"
+                    name="accion"
+                    value="apagar">
+                    Apagar bomba
+                </button>
+
+                <button
+                    type="submit"
+                    name="accion"
+                    value="automatico">
+                    Activar modo automático
+                </button>
+
+            </form>
+
+            <a href="{{ url_for('index') }}">Volver al inicio</a>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

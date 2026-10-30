@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Historial del sistema</h1>
+        <p>Registro de actividades</p>
+    </header>
+
+    <main class="contenedor">
+
+        <section class="tarjeta">
+
+            <h2>Movimientos registrados</h2>
+
+            {% if sistema["historial"] %}
+
+                <ul class="lista-historial">
+                    {% for evento in sistema["historial"] %}
+                        <li>{{ evento }}</li>
+                    {% endfor %}
+                </ul>
+
+                <form
+                    method="POST"
+                    action="{{ url_for('limpiar_historial') }}">
+
+                    <button type="submit">
+                        Limpiar historial
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <p>No hay actividades registradas.</p>
+
+            {% endif %}
+
+            <a href="{{ url_for('index') }}">Volver al inicio</a>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

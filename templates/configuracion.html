@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>Configuración del sistema</h1>
+        <p>Personaliza los parámetros de riego</p>
+    </header>
+
+    <main class="contenedor">
+
+        <section class="tarjeta">
+
+            <form method="POST" action="{{ url_for('configuracion') }}">
+
+                <label for="humedad_minima">
+                    Humedad mínima (%):
+                </label>
+
+                <input
+                    type="number"
+                    id="humedad_minima"
+                    name="humedad_minima"
+                    min="0"
+                    max="100"
+                    value="{{ sistema['humedad_minima'] }}"
+                    required
+                >
+
+                <label for="duracion">
+                    Duración de riego (minutos):
+                </label>
+
+                <input
+                    type="number"
+                    id="duracion"
+                    name="duracion"
+                    min="1"
+                    max="60"
+                    value="{{ sistema['duracion'] }}"
+                    required
+                >
+
+                <button type="submit">
+                    Guardar configuración
+                </button>
+
+            </form>
+
+            <p>
+                Humedad actual: {{ sistema["humedad"] }}%
+            </p>
+
+            <p>
+                Modo actual: {{ sistema["modo"] }}
+            </p>
+
+            <a href="{{ url_for('index') }}">Volver al inicio</a>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
