@@ -1,63 +1,59 @@
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de bomba</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <header>
-        <h1>Control de la bomba</h1>
-        <p>Administración del sistema de riego</p>
-    </header>
+{% block titulo %}Control de bomba{% endblock %}
 
-    <main class="contenedor">
+{% block contenido %}
 
-        <section class="tarjeta">
+<h2>Control de la bomba de agua</h2>
 
-            <h2>Estado actual</h2>
+<div class="tarjeta">
 
-            {% if sistema["bomba"] %}
-                <p class="encendido">BOMBA ENCENDIDA</p>
-            {% else %}
-                <p class="apagado">BOMBA APAGADA</p>
-            {% endif %}
+    <h3>Estado actual</h3>
 
-            <p>Modo: {{ sistema["modo"] }}</p>
+    {% if sistema["bomba"] %}
+        <p class="estado encendida">ENCENDIDA</p>
+    {% else %}
+        <p class="estado apagada">APAGADA</p>
+    {% endif %}
 
-            <form method="POST" action="{{ url_for('bomba') }}">
+    <p>Modo: <strong>{{ sistema["modo"] }}</strong></p>
+    <p>Humedad actual: {{ sistema["humedad"] }}%</p>
+    <p>Humedad mínima: {{ sistema["humedad_minima"] }}%</p>
 
-                <button
-                    type="submit"
-                    name="accion"
-                    value="encender">
-                    Encender bomba
-                </button>
+    <form method="POST">
 
-                <button
-                    type="submit"
-                    name="accion"
-                    value="apagar">
-                    Apagar bomba
-                </button>
+        <button type="submit" name="accion" value="encender">
+            Encender bomba
+        </button>
 
-                <button
-                    type="submit"
-                    name="accion"
-                    value="automatico">
-                    Activar modo automático
-                </button>
+        <button type="submit" name="accion" value="apagar">
+            Apagar bomba
+        </button>
 
-            </form>
+        <button type="submit" name="accion" value="automatico">
+            Activar modo automático
+        </button>
 
-            <a href="{{ url_for('index') }}">Volver al inicio</a>
+    </form>
 
-        </section>
+</div>
 
-    </main>
+<div class="tarjeta">
 
-</body>
-</html>
+    <h3>Modos de funcionamiento</h3>
+
+    <p>
+        <strong>Manual:</strong>
+        tú decides cuándo encender o apagar la bomba.
+    </p>
+
+    <p>
+        <strong>Automático:</strong>
+        el sistema enciende la bomba cuando la humedad es menor
+        al mínimo configurado y la apaga cuando alcanza ese valor.
+    </p>
+
+</div>
+
+{% endblock %}

@@ -1,65 +1,59 @@
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Riego</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <header>
-        <h1>Sistema de Automatización de Riego</h1>
-        <p>Panel principal de control</p>
-    </header>
+{% block titulo %}Inicio{% endblock %}
 
-    <main class="contenedor">
+{% block contenido %}
 
-        <section class="tarjetas">
+<h2>Panel principal</h2>
+<p>Bienvenido al Sistema de Automatización de Riego.</p>
 
-            <div class="tarjeta">
-                <h3>Humedad del suelo</h3>
-                <p class="dato">{{ sistema["humedad"] }}%</p>
-                <a href="{{ url_for('humedad') }}">Consultar humedad</a>
+<div class="contenedor">
+
+    <div class="tarjeta">
+        <h3>Humedad del suelo</h3>
+
+        <p class="numero">{{ sistema["humedad"] }}%</p>
+
+        <div class="barra">
+            <div class="progreso"
+                 style="width: {{ sistema['humedad'] }}%;">
             </div>
+        </div>
+    </div>
 
-            <div class="tarjeta">
-                <h3>Estado de la bomba</h3>
+    <div class="tarjeta">
+        <h3>Estado de la bomba</h3>
 
-                {% if sistema["bomba"] %}
-                    <p class="encendido">ENCENDIDA</p>
-                {% else %}
-                    <p class="apagado">APAGADA</p>
-                {% endif %}
+        {% if sistema["bomba"] %}
+            <p class="estado encendida">ENCENDIDA</p>
+        {% else %}
+            <p class="estado apagada">APAGADA</p>
+        {% endif %}
+    </div>
 
-                <a href="{{ url_for('bomba') }}">Controlar bomba</a>
-            </div>
+    <div class="tarjeta">
+        <h3>Modo de funcionamiento</h3>
+        <p class="numero">{{ sistema["modo"] }}</p>
+    </div>
 
-            <div class="tarjeta">
-                <h3>Modo de funcionamiento</h3>
-                <p class="dato">{{ sistema["modo"] }}</p>
-                <a href="{{ url_for('bomba') }}">Cambiar modo</a>
-            </div>
+    <div class="tarjeta">
+        <h3>Humedad mínima</h3>
+        <p class="numero">{{ sistema["humedad_minima"] }}%</p>
+    </div>
 
-            <div class="tarjeta">
-                <h3>Humedad mínima</h3>
-                <p class="dato">{{ sistema["humedad_minima"] }}%</p>
-                <a href="{{ url_for('configuracion') }}">Configurar</a>
-            </div>
+</div>
 
-        </section>
+<div class="tarjeta">
+    <h3>Información del sistema</h3>
 
-        <section class="menu">
-            <h2>Menú del sistema</h2>
+    {% if sistema["modo"] == "Automatico" %}
+        <p>El sistema controla automáticamente la bomba según la humedad.</p>
+    {% else %}
+        <p>El sistema está funcionando en modo manual.</p>
+    {% endif %}
 
-            <a href="{{ url_for('humedad') }}">Humedad</a>
-            <a href="{{ url_for('bomba') }}">Control de bomba</a>
-            <a href="{{ url_for('configuracion') }}">Configuración</a>
-            <a href="{{ url_for('historial') }}">Historial</a>
-        </section>
+    <a href="{{ url_for('humedad') }}">Ir al control de humedad</a>
+</div>
 
-    </main>
-
-</body>
-</html>
+{% endblock %}

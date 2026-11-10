@@ -1,72 +1,48 @@
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuración</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <header>
-        <h1>Configuración del sistema</h1>
-        <p>Personaliza los parámetros de riego</p>
-    </header>
+{% block titulo %}Configuración{% endblock %}
 
-    <main class="contenedor">
+{% block contenido %}
 
-        <section class="tarjeta">
+<h2>Configuración del sistema</h2>
 
-            <form method="POST" action="{{ url_for('configuracion') }}">
+<div class="tarjeta">
 
-                <label for="humedad_minima">
-                    Humedad mínima (%):
-                </label>
+    <form method="POST">
 
-                <input
-                    type="number"
-                    id="humedad_minima"
-                    name="humedad_minima"
-                    min="0"
-                    max="100"
-                    value="{{ sistema['humedad_minima'] }}"
-                    required
-                >
+        <label for="humedad_minima">
+            Humedad mínima (0 a 100%):
+        </label>
 
-                <label for="duracion">
-                    Duración de riego (minutos):
-                </label>
+        <input
+            type="number"
+            id="humedad_minima"
+            name="humedad_minima"
+            min="0"
+            max="100"
+            value="{{ sistema['humedad_minima'] }}"
+            required
+        >
 
-                <input
-                    type="number"
-                    id="duracion"
-                    name="duracion"
-                    min="1"
-                    max="60"
-                    value="{{ sistema['duracion'] }}"
-                    required
-                >
+        <label for="duracion">
+            Duración del riego (1 a 60 minutos):
+        </label>
 
-                <button type="submit">
-                    Guardar configuración
-                </button>
+        <input
+            type="number"
+            id="duracion"
+            name="duracion"
+            min="1"
+            max="60"
+            value="{{ sistema['duracion'] }}"
+            required
+        >
 
-            </form>
+        <button type="submit">Guardar configuración</button>
 
-            <p>
-                Humedad actual: {{ sistema["humedad"] }}%
-            </p>
+    </form>
 
-            <p>
-                Modo actual: {{ sistema["modo"] }}
-            </p>
+</div>
 
-            <a href="{{ url_for('index') }}">Volver al inicio</a>
-
-        </section>
-
-    </main>
-
-</body>
-</html>
+{% endblock %}

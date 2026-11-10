@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block titulo %}Sistema de Riego{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>Sistema de Automatización de Riego</h1>
+
+        <nav>
+            <a href="{{ url_for('inicio') }}">Inicio</a>
+            <a href="{{ url_for('humedad') }}">Humedad</a>
+            <a href="{{ url_for('bomba') }}">Bomba</a>
+            <a href="{{ url_for('configuracion') }}">Configuración</a>
+            <a href="{{ url_for('historial') }}">Historial</a>
+        </nav>
+    </header>
+
+    <main>
+
+        {% with mensajes = get_flashed_messages() %}
+            {% if mensajes %}
+                {% for mensaje in mensajes %}
+                    <p class="mensaje">{{ mensaje }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block contenido %}{% endblock %}
+
+    </main>
+
+    <footer>
+        <p>Proyecto escolar - Sistema de Automatización de Riego</p>
+    </footer>
+
+</body>
+</html>

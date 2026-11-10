@@ -1,54 +1,48 @@
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <header>
-        <h1>Historial del sistema</h1>
-        <p>Registro de actividades</p>
-    </header>
+{% block titulo %}Historial{% endblock %}
 
-    <main class="contenedor">
+{% block contenido %}
 
-        <section class="tarjeta">
+<h2>Historial de actividades</h2>
 
-            <h2>Movimientos registrados</h2>
+<div class="tarjeta">
 
-            {% if sistema["historial"] %}
+    {% if registros %}
 
-                <ul class="lista-historial">
-                    {% for evento in sistema["historial"] %}
-                        <li>{{ evento }}</li>
-                    {% endfor %}
-                </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Humedad</th>
+                    <th>Evento</th>
+                </tr>
+            </thead>
 
-                <form
-                    method="POST"
-                    action="{{ url_for('limpiar_historial') }}">
+            <tbody>
+                {% for registro in registros %}
+                <tr>
+                    <td>{{ registro["fecha"] }}</td>
+                    <td>{{ registro["humedad"] }}%</td>
+                    <td>{{ registro["evento"] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-                    <button type="submit">
-                        Limpiar historial
-                    </button>
+        <form action="{{ url_for('limpiar_historial') }}" method="POST">
+            <button type="submit" class="peligro">
+                Limpiar historial
+            </button>
+        </form>
 
-                </form>
+    {% else %}
 
-            {% else %}
+        <p>No hay registros todavía.</p>
 
-                <p>No hay actividades registradas.</p>
+    {% endif %}
 
-            {% endif %}
+</div>
 
-            <a href="{{ url_for('index') }}">Volver al inicio</a>
-
-        </section>
-
-    </main>
-
-</body>
-</html>
+{% endblock %}

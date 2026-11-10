@@ -1,72 +1,96 @@
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Humedad del suelo</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <header>
-        <h1>Medición de humedad</h1>
-        <p>Control del nivel de humedad del suelo</p>
-    </header>
+{% block titulo %}Control de humedad{% endblock %}
 
-    <main class="contenedor">
+{% block contenido %}
 
-        <section class="tarjeta">
-            <h2>Humedad actual</h2>
+<h2>Control de humedad del suelo</h2>
 
-            <p class="dato">{{ sistema["humedad"] }}%</p>
+<div class="tarjeta">
 
-            <progress
-                value="{{ sistema['humedad'] }}"
-                max="100">
-            </progress>
+    <h3>Humedad actual</h3>
 
-            <p>
-                Nivel mínimo configurado:
-                {{ sistema["humedad_minima"] }}%
-            </p>
+    <p class="numero">{{ sistema["humedad"] }}%</p>
 
-            <form action="{{ url_for('humedad') }}" method="POST">
+    <div class="barra">
+        <div class="progreso"
+             style="width: {{ sistema['humedad'] }}%;">
+        </div>
+    </div>
 
-                <label for="humedad">
-                    Introduce un nuevo nivel de humedad:
-                </label>
+    <p>
+        Humedad mínima configurada:
+        <strong>{{ sistema["humedad_minima"] }}%</strong>
+    </p>
 
-                <input
-                    type="number"
-                    id="humedad"
-                    name="humedad"
-                    min="0"
-                    max="100"
-                    value="{{ sistema['humedad'] }}"
-                    required
-                >
+    <form action="{{ url_for('cambiar_humedad') }}" method="POST">
 
-                <button type="submit">
-                    Actualizar humedad
-                </button>
+        <button type="submit"
+                name="cambio"
+                value="-1"
+                {% if sistema["humedad"] <= 0 %}disabled{% endif %}>
+            − Bajar 1%
+        </button>
 
-            </form>
+        <button type="submit"
+                name="cambio"
+                value="1"
+                {% if sistema["humedad"] >= 100 %}disabled{% endif %}>
+            + Subir 1%
+        </button>
 
-            {% if sistema["humedad"] < sistema["humedad_minima"] %}
-                <p class="advertencia">
-                    La humedad está por debajo del nivel mínimo.
-                </p>
-            {% else %}
-                <p class="correcto">
-                    La humedad está en el nivel configurado.
-                </p>
-            {% endif %}
+    </form>
 
-            <a href="{{ url_for('index') }}">Volver al inicio</a>
-        </section>
+</div>
 
-    </main>
+<div class="tarjeta">
 
-</body>
-</html>
+    <h3>Simulación de riego</h3>
+
+    <p>
+        Estado de la bomba:
+        <strong>
+            {{ "ENCENDIDA" if sistema["bomba"] else "APAGADA" }}
+        </strong>
+    </p>
+
+    <form action="{{ url_for('simular_riego') }}" method="POST">
+
+        <button type="submit"
+                {% if not sistema["bomba"] %}disabled{% endif %}>
+            Simular riego
+        </button>
+
+    </form>
+
+    <p class="ayuda">
+        La simulación aumenta la humedad cuando la bomba está encendida.
+    </p>
+
+</div>
+
+<div class="tarjeta">
+
+    <h3>Modificar humedad manualmente</h3>
+
+    <form action="{{ url_for('humedad') }}" method="POST">
+
+        <label for="humedad">Introduce la humedad (0 a 100):</label>
+
+        <input
+            type="number"
+            id="humedad"
+            name="humedad"
+            min="0"
+            max="100"
+            required
+        >
+
+        <button type="submit">Actualizar humedad</button>
+
+    </form>
+
+</div>
+
+{% endblock %}
